@@ -1,0 +1,29 @@
+#!/bin/bash
+
+readonly SOURCE=$1
+
+if [[ "${2}" = -* ]] && [[ "${3}" != -* ]]; then
+	STAGE=$2
+	OUTPUT=$3
+fi
+if [[ "${3}" = -* ]] && [[ "${2}" != -* ]]; then
+	STAGE=$3
+	OUTPUT=$2
+fi
+
+if [[ -n "${2}" ]] && [[ "${2}" != -* ]]; then
+	OUTPUT=$2
+fi
+
+if [[ -z "${STAGE}" ]]; then
+	STAGE=''
+fi
+if [[ -z "$OUTPUT" ]]; then
+	OUTPUT='a.out'
+fi
+
+if [[ ${STAGE} ]]; then
+	gcc ${STAGE} -Wall -Werror -Wextra -pedantic -std=gnu89 ${SOURCE} -o ${OUTPUT}
+else
+	gcc ${STAGE} -Wall -Werror -Wextra -pedantic -std=gnu89 ${SOURCE} -o ${OUTPUT} && ./${OUTPUT}
+fi
